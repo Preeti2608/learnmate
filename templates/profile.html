@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Student Profile – LearnMate{% endblock %}
+
+{% block content %}
+<div class="container-xl py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Page header -->
+      <div class="lm-page-header text-center mb-5">
+        <span class="lm-section-badge">Step 1 of 1</span>
+        <h1 class="lm-page-title">Build Your Learning Profile</h1>
+        <p class="lm-page-subtitle">
+          The more you share, the smarter your personalized roadmap will be.
+          All fields marked with <span class="text-danger">*</span> are required.
+        </p>
+      </div>
+
+      <!-- Profile form card -->
+      <div class="lm-card lm-card-glass p-4 p-md-5">
+        <form id="profileForm" method="POST" action="{{ url_for('profile') }}" novalidate>
+
+          <!-- ── Section: Personal Info ── -->
+          <div class="lm-form-section">
+            <h5 class="lm-form-section-title">
+              <i class="bi bi-person-fill me-2 text-primary"></i>Personal Information
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label lm-label">Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control lm-input" name="name"
+                       placeholder="e.g. Priya Sharma" required
+                       value="{{ profile.get('name','') }}" />
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label lm-label">Education Level <span class="text-danger">*</span></label>
+                <select class="form-select lm-input" name="education" required>
+                  <option value="" disabled {% if not profile.get('education') %}selected{% endif %}>Select level</option>
+                  {% for opt in ["High School","Diploma","Bachelor's Degree","Master's Degree","PhD","Self-taught","Bootcamp Graduate"] %}
+                  <option value="{{ opt }}" {{ "selected" if profile.get('education') == opt }}>{{ opt }}</option>
+                  {% endfor %}
+                </select>
+                <div class="invalid-feedback">Please select your education level.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label lm-label">College / University</label>
+                <input type="text" class="form-control lm-input" name="college"
+                       placeholder="e.g. MIT, IIT Delhi"
+                       value="{{ profile.get('college','') }}" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label lm-label">Branch / Major</label>
+                <input type="text" class="form-control lm-input" name="branch"
+                       placeholder="e.g. Computer Science, Electronics"
+                       value="{{ profile.get('branch','') }}" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Section: Learning Details ── -->
+          <div class="lm-form-section">
+            <h5 class="lm-form-section-title">
+              <i class="bi bi-lightbulb-fill me-2 text-warning"></i>Learning Details
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label lm-label">Current Skill Level <span class="text-danger">*</span></label>
+                <div class="lm-skill-selector" id="skillSelector">
+                  {% for level, icon, color in [("Beginner","bi-seedling","success"),("Intermediate","bi-lightning-charge-fill","warning"),("Advanced","bi-fire","danger")] %}
+                  <div class="lm-skill-opt {{ 'active' if profile.get('skill_level', 'Beginner') == level }}"
+                       data-value="{{ level }}">
+                    <i class="bi {{ icon }} text-{{ color }}"></i>
+                    <span>{{ level }}</span>
+                  </div>
+                  {% endfor %}
+                </div>
+                <input type="hidden" name="skill_level" id="skillLevelInput"
+                       value="{{ profile.get('skill_level','Beginner') }}" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label lm-label">Daily Study Hours</label>
+                <div class="d-flex align-items-center gap-3">
+                  <input type="range" class="form-range lm-range flex-grow-1" name="study_hours"
+                         id="studyHoursRange" min="0.5" max="12" step="0.5"
+                         value="{{ profile.get('study_hours', 2) }}"
+                         oninput="document.getElementById('studyHoursVal').textContent=this.value" />
+                  <span class="lm-range-val" id="studyHoursVal">{{ profile.get('study_hours', 2) }}</span>
+                  <span class="text-muted small">hrs/day</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label lm-label">Career Goal <span class="text-danger">*</span></label>
+                <input type="text" class="form-control lm-input" name="career_goal"
+                       placeholder="e.g. Full Stack Developer, Data Scientist, DevOps Engineer"
+                       required value="{{ profile.get('career_goal','') }}" />
+                <div class="invalid-feedback">Please describe your career goal.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label lm-label">Interested Technologies <span class="text-danger">*</span></label>
+                <input type="text" class="form-control lm-input" name="technologies"
+                       placeholder="e.g. Python, React, Node.js, AWS, Machine Learning"
+                       required value="{{ profile.get('technologies','') }}" />
+                <div class="form-text">Comma-separated list of technologies you're interested in or already know.</div>
+                <div class="invalid-feedback">Please list at least one technology.</div>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label lm-label">Preferred Learning Style</label>
+                <div class="lm-style-grid" id="learningStyleGrid">
+                  {% for style, icon in [("Videos","bi-play-btn-fill"),("Reading/Docs","bi-book-fill"),("Hands-on Projects","bi-code-slash"),("Interactive Exercises","bi-puzzle-fill"),("Mixed","bi-grid-fill")] %}
+                  <div class="lm-style-opt {{ 'active' if profile.get('learning_style','Mixed') == style }}"
+                       data-value="{{ style }}">
+                    <i class="bi {{ icon }}"></i>
+                    <span>{{ style }}</span>
+                  </div>
+                  {% endfor %}
+                </div>
+                <input type="hidden" name="learning_style" id="learningStyleInput"
+                       value="{{ profile.get('learning_style','Mixed') }}" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-flex justify-content-end gap-3 mt-4">
+            {% if profile %}
+            <button type="button" class="btn lm-btn-outline-secondary" onclick="confirmClear()">
+              <i class="bi bi-trash3 me-2"></i>Clear Profile
+            </button>
+            {% endif %}
+            <button type="submit" class="btn lm-btn-primary px-5">
+              <i class="bi bi-save2-fill me-2"></i>
+              {{ "Update Profile" if profile else "Save & Generate Roadmap" }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ── Skill selector ──────────────────────────────────────────
+document.querySelectorAll('.lm-skill-opt').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.lm-skill-opt').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('skillLevelInput').value = el.dataset.value;
+  });
+});
+
+// ── Learning style selector ─────────────────────────────────
+document.querySelectorAll('.lm-style-opt').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.lm-style-opt').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('learningStyleInput').value = el.dataset.value;
+  });
+});
+
+// ── Form validation ─────────────────────────────────────────
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+  if (!this.checkValidity()) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  this.classList.add('was-validated');
+});
+
+// ── Clear profile ───────────────────────────────────────────
+function confirmClear() {
+  if (confirm('Clear your profile and start fresh?')) {
+    fetch('/api/profile/clear', { method: 'POST' })
+      .then(() => window.location.href = '/profile');
+  }
+}
+</script>
+{% endblock %}

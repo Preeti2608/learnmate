@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}LearnMate – AI-Powered Personalized Learning Coach{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════ HERO SECTION ══════════════════════ -->
+<section class="lm-hero">
+  <div class="lm-hero-bg-shapes">
+    <div class="lm-shape lm-shape-1"></div>
+    <div class="lm-shape lm-shape-2"></div>
+    <div class="lm-shape lm-shape-3"></div>
+  </div>
+  <div class="container-xl position-relative">
+    <div class="row align-items-center min-vh-80 py-5">
+      <div class="col-lg-6 text-center text-lg-start">
+        <div class="lm-hero-badge animate-fade-up" style="--delay:0ms">
+          <span class="badge lm-badge-pill">
+            <i class="bi bi-stars me-1"></i>Powered by IBM Granite AI
+          </span>
+        </div>
+        <h1 class="lm-hero-title animate-fade-up" style="--delay:100ms">
+          Your Personal<br/>
+          <span class="lm-gradient-text">AI Learning</span><br/>
+          Coach
+        </h1>
+        <p class="lm-hero-subtitle animate-fade-up" style="--delay:200ms">
+          LearnMate understands your goals, evaluates your skills, and builds a
+          <strong>100% personalized</strong> learning roadmap — powered by IBM watsonx.ai.
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start animate-fade-up" style="--delay:300ms">
+          <a href="{{ url_for('profile') }}" class="btn lm-btn-hero-primary">
+            <i class="bi bi-rocket-takeoff-fill me-2"></i>Start Learning
+          </a>
+          {% if session.get('profile') %}
+          <a href="{{ url_for('chat') }}" class="btn lm-btn-hero-outline">
+            <i class="bi bi-chat-dots-fill me-2"></i>Talk to AI Coach
+          </a>
+          {% else %}
+          <a href="#features" class="btn lm-btn-hero-outline">
+            <i class="bi bi-play-circle me-2"></i>See How It Works
+          </a>
+          {% endif %}
+        </div>
+        <!-- Stats row -->
+        <div class="lm-hero-stats animate-fade-up" style="--delay:400ms">
+          <div class="lm-stat">
+            <span class="lm-stat-num">9+</span>
+            <span class="lm-stat-label">AI Modules</span>
+          </div>
+          <div class="lm-stat-divider"></div>
+          <div class="lm-stat">
+            <span class="lm-stat-num">100%</span>
+            <span class="lm-stat-label">Personalized</span>
+          </div>
+          <div class="lm-stat-divider"></div>
+          <div class="lm-stat">
+            <span class="lm-stat-num">IBM</span>
+            <span class="lm-stat-label">Granite AI</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center animate-fade-left" style="--delay:200ms">
+        <!-- Animated AI card illustration -->
+        <div class="lm-hero-card-stack">
+          <div class="lm-hero-card lm-hc-1">
+            <i class="bi bi-map-fill"></i>
+            <span>Learning Roadmap Generated</span>
+          </div>
+          <div class="lm-hero-card lm-hc-2 lm-hero-card-main">
+            <div class="lm-chat-bubble lm-chat-ai">
+              <i class="bi bi-robot me-2"></i>
+              Hi! I'm LearnMate. Tell me your career goal and I'll build your perfect learning path! 🚀
+            </div>
+            <div class="lm-chat-bubble lm-chat-user">
+              I want to become a Full Stack Developer!
+            </div>
+            <div class="lm-chat-bubble lm-chat-ai">
+              <i class="bi bi-robot me-2"></i>
+              Perfect! Let me analyze your profile and create a personalized roadmap...
+            </div>
+          </div>
+          <div class="lm-hero-card lm-hc-3">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Skill Gap Analysis Ready</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Scroll indicator -->
+  <div class="lm-scroll-indicator">
+    <a href="#features"><i class="bi bi-chevron-double-down"></i></a>
+  </div>
+</section>
+
+<!-- ══════════════════════ HOW IT WORKS ══════════════════════ -->
+<section class="lm-section lm-section-alt" id="how-it-works">
+  <div class="container-xl">
+    <div class="text-center mb-5">
+      <span class="lm-section-badge">Simple 3-Step Process</span>
+      <h2 class="lm-section-title">How LearnMate Works</h2>
+      <p class="lm-section-subtitle">From zero to personalized roadmap in minutes</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="lm-step-card animate-on-scroll">
+          <div class="lm-step-num">01</div>
+          <div class="lm-step-icon-wrap"><i class="bi bi-person-vcard-fill"></i></div>
+          <h4>Build Your Profile</h4>
+          <p class="text-muted">Tell us your education background, career goal, current skills, and how many hours you can study daily.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="lm-step-card animate-on-scroll" style="--delay:100ms">
+          <div class="lm-step-num">02</div>
+          <div class="lm-step-icon-wrap"><i class="bi bi-cpu-fill"></i></div>
+          <h4>AI Analysis</h4>
+          <p class="text-muted">IBM Granite AI analyzes your profile, identifies skill gaps, and designs a learning strategy tailored for you.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="lm-step-card animate-on-scroll" style="--delay:200ms">
+          <div class="lm-step-num">03</div>
+          <div class="lm-step-icon-wrap"><i class="bi bi-trophy-fill"></i></div>
+          <h4>Start Your Journey</h4>
+          <p class="text-muted">Follow your personalized roadmap, study plan, and project ideas. Chat with your AI coach anytime for guidance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FEATURES SECTION ══════════════════════ -->
+<section class="lm-section" id="features">
+  <div class="container-xl">
+    <div class="text-center mb-5">
+      <span class="lm-section-badge">Everything You Need</span>
+      <h2 class="lm-section-title">AI-Powered Learning Modules</h2>
+      <p class="lm-section-subtitle">A complete toolkit to accelerate your tech career</p>
+    </div>
+    <div class="row g-4">
+      {% set features = [
+        ("bi-chat-dots-fill","text-primary","AI Chat Coach","Ask anything, get instant personalized answers from your AI learning coach powered by IBM Granite.", url_for('chat')),
+        ("bi-signpost-2-fill","text-success","Learning Roadmap","Step-by-step roadmap divided into Beginner, Intermediate, and Advanced phases with milestones.", url_for('roadmap')),
+        ("bi-bar-chart-gaps","text-warning","Skill Gap Analysis","Identify exactly what skills you're missing and get a prioritized plan to fill the gaps.", url_for('skill_gap')),
+        ("bi-book-fill","text-info","Course Recommendations","Curated learning topics organized in the right order with platform recommendations.", url_for('courses')),
+        ("bi-calendar3","text-danger","Weekly Study Planner","Personalized day-by-day schedule based on your available hours and learning goals.", url_for('weekly_plan')),
+        ("bi-code-slash","text-secondary","Project Recommendations","Hands-on project ideas across Beginner, Intermediate, and Advanced levels.", url_for('projects')),
+        ("bi-briefcase-fill","text-primary","Career Guidance","Career paths, interview prep, certifications, and a 12-month action plan.", url_for('career')),
+        ("bi-speedometer2","text-success","Progress Dashboard","All your learning goals, roadmap, projects, and plans in one place.", url_for('dashboard')),
+      ] %}
+      {% for icon, color, title, desc, link in features %}
+      <div class="col-md-6 col-xl-3">
+        <div class="lm-feature-card animate-on-scroll h-100">
+          <div class="lm-feature-icon {{ color }}">
+            <i class="bi {{ icon }}"></i>
+          </div>
+          <h5 class="lm-feature-title">{{ title }}</h5>
+          <p class="text-muted small mb-3">{{ desc }}</p>
+          <a href="{{ link }}" class="lm-feature-link">
+            Explore <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CTA SECTION ══════════════════════ -->
+<section class="lm-section lm-cta-section">
+  <div class="container-xl">
+    <div class="lm-cta-card text-center">
+      <div class="lm-cta-icon mb-3">🚀</div>
+      <h2 class="lm-cta-title">Ready to Transform Your Learning Journey?</h2>
+      <p class="lm-cta-subtitle">Join thousands of students who use LearnMate to achieve their career goals faster.</p>
+      <a href="{{ url_for('profile') }}" class="btn lm-btn-hero-primary btn-lg mt-2">
+        <i class="bi bi-rocket-takeoff-fill me-2"></i>
+        {{ "Continue Learning" if session.get('profile') else "Create Your Profile" }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

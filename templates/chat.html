@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}AI Chat Coach – LearnMate{% endblock %}
+
+{% block content %}
+<div class="container-xl py-4">
+  <div class="row g-4 justify-content-center">
+
+    <!-- ── Sidebar: Profile snapshot ── -->
+    <div class="col-lg-3 d-none d-lg-block">
+      <div class="lm-card p-3 sticky-top" style="top: 80px">
+        <div class="text-center mb-3">
+          <div class="lm-avatar-circle mx-auto mb-2">
+            {{ profile.get('name','?')[0].upper() }}
+          </div>
+          <h6 class="mb-0">{{ profile.get('name','Student') }}</h6>
+          <small class="text-muted">{{ profile.get('skill_level','') }} Level</small>
+        </div>
+        <hr class="lm-divider" />
+        <div class="lm-mini-info">
+          <div class="lm-mini-item">
+            <i class="bi bi-bullseye text-primary"></i>
+            <span>{{ profile.get('career_goal','') }}</span>
+          </div>
+          <div class="lm-mini-item">
+            <i class="bi bi-code-slash text-success"></i>
+            <span>{{ profile.get('technologies','') }}</span>
+          </div>
+          <div class="lm-mini-item">
+            <i class="bi bi-clock text-warning"></i>
+            <span>{{ profile.get('study_hours','2') }} hrs/day</span>
+          </div>
+        </div>
+        <hr class="lm-divider" />
+        <p class="text-muted small mb-2">Quick actions</p>
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('roadmap') }}" class="btn btn-sm lm-btn-outline-primary">
+            <i class="bi bi-signpost-2 me-1"></i>View Roadmap
+          </a>
+          <a href="{{ url_for('skill_gap') }}" class="btn btn-sm lm-btn-outline-secondary">
+            <i class="bi bi-bar-chart-gaps me-1"></i>Skill Gap
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Main chat area ── -->
+    <div class="col-lg-9">
+      <div class="lm-page-header mb-3">
+        <h2 class="lm-page-title mb-1">
+          <i class="bi bi-robot text-primary me-2"></i>AI Chat Coach
+        </h2>
+        <p class="text-muted mb-0">Ask me anything about your learning journey, skills, or career.</p>
+      </div>
+
+      <!-- Chat window -->
+      <div class="lm-chat-window" id="chatWindow">
+
+        <!-- Welcome message -->
+        <div class="lm-msg lm-msg-ai" id="welcomeMsg">
+          <div class="lm-msg-avatar"><i class="bi bi-robot"></i></div>
+          <div class="lm-msg-body">
+            <div class="lm-msg-bubble">
+              <p class="mb-2">👋 Hi <strong>{{ profile.get('name', 'there') }}</strong>! I'm your LearnMate AI Coach, powered by IBM Granite.</p>
+              <p class="mb-2">I know you want to become a <strong>{{ profile.get('career_goal','developer') }}</strong> and you're currently at <strong>{{ profile.get('skill_level','Beginner') }}</strong> level.</p>
+              <p class="mb-0">How can I help you today? Here are some things you can ask me:</p>
+              <div class="lm-suggestion-chips mt-2">
+                <button class="lm-chip" onclick="sendSuggestion(this)">How do I start learning {{ profile.get('technologies','').split(',')[0].strip() or 'programming' }}?</button>
+                <button class="lm-chip" onclick="sendSuggestion(this)">What are the most important skills I need?</button>
+                <button class="lm-chip" onclick="sendSuggestion(this)">Give me a motivational tip for today</button>
+                <button class="lm-chip" onclick="sendSuggestion(this)">What projects should I build first?</button>
+              </div>
+            </div>
+            <span class="lm-msg-time">Now</span>
+          </div>
+        </div>
+
+        <!-- Dynamic messages injected by JS -->
+        <div id="chatMessages"></div>
+
+        <!-- Typing indicator (hidden by default) -->
+        <div class="lm-msg lm-msg-ai d-none" id="typingIndicator">
+          <div class="lm-msg-avatar"><i class="bi bi-robot"></i></div>
+          <div class="lm-msg-body">
+            <div class="lm-msg-bubble lm-typing">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="lm-chat-input-bar mt-3">
+        <div class="lm-chat-input-wrap">
+          <textarea id="chatInput" class="lm-chat-textarea" rows="1"
+                    placeholder="Ask me anything about your learning journey..."
+                    onkeydown="handleChatKey(event)"></textarea>
+          <button id="sendBtn" class="lm-chat-send-btn" onclick="sendMessage()">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+        <p class="text-muted small text-center mt-2">
+          <i class="bi bi-info-circle me-1"></i>
+          Press <kbd>Enter</kbd> to send, <kbd>Shift+Enter</kbd> for a new line.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

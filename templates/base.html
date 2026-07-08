@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}LearnMate – AI Learning Coach{% endblock %}</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- LearnMate Custom Styles -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg lm-navbar sticky-top">
+  <div class="container-xl">
+    <!-- Brand -->
+    <a class="navbar-brand lm-brand" href="{{ url_for('home') }}">
+      <span class="lm-brand-icon">🎓</span>
+      <span class="lm-brand-text">LearnMate</span>
+      <span class="lm-brand-badge">AI</span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">
+            <i class="bi bi-house-door me-1"></i>Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}" href="{{ url_for('profile') }}">
+            <i class="bi bi-person-circle me-1"></i>Profile
+          </a>
+        </li>
+        {% if session.get('profile') %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'chat' %}active{% endif %}" href="{{ url_for('chat') }}">
+            <i class="bi bi-chat-dots me-1"></i>Chat
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-map me-1"></i>Learn
+          </a>
+          <ul class="dropdown-menu lm-dropdown">
+            <li><a class="dropdown-item" href="{{ url_for('roadmap') }}"><i class="bi bi-signpost-2 me-2 text-primary"></i>Learning Roadmap</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('skill_gap') }}"><i class="bi bi-bar-chart-gaps me-2 text-warning"></i>Skill Gap Analysis</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('courses') }}"><i class="bi bi-book me-2 text-success"></i>Course Recommendations</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="{{ url_for('weekly_plan') }}"><i class="bi bi-calendar3 me-2 text-info"></i>Weekly Study Plan</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('projects') }}"><i class="bi bi-code-slash me-2 text-danger"></i>Project Ideas</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('career') }}"><i class="bi bi-briefcase me-2 text-secondary"></i>Career Guidance</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <!-- Dark mode toggle + profile quick info -->
+      <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0 gap-2">
+        <button id="themeSwitcher" class="btn btn-sm lm-theme-btn" title="Toggle dark mode">
+          <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+        </button>
+        {% if session.get('profile') %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-sm lm-btn-primary">
+          <i class="bi bi-person-fill me-1"></i>
+          {{ session['profile'].get('name', 'Student')[:12] }}
+        </a>
+        {% else %}
+        <a href="{{ url_for('profile') }}" class="btn btn-sm lm-btn-primary">
+          <i class="bi bi-rocket-takeoff me-1"></i>Get Started
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     FLASH MESSAGES
+════════════════════════════════════════════════════════════ -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="container-xl mt-3">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'success' if category == 'success' else 'warning' if category == 'warning' else 'info' }} alert-dismissible fade show lm-alert" role="alert">
+      <i class="bi bi-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' if category == 'warning' else 'info-circle' }} me-2"></i>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════ -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer class="lm-footer mt-auto">
+  <div class="container-xl">
+    <div class="row gy-4">
+      <div class="col-lg-4">
+        <div class="lm-brand mb-2">
+          <span class="lm-brand-icon">🎓</span>
+          <span class="lm-brand-text">LearnMate</span>
+          <span class="lm-brand-badge">AI</span>
+        </div>
+        <p class="text-muted small">Your personalized AI learning coach powered by IBM watsonx.ai and IBM Granite models.</p>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h6 class="lm-footer-heading">Learn</h6>
+        <ul class="list-unstyled lm-footer-links">
+          <li><a href="{{ url_for('roadmap') }}">Roadmap</a></li>
+          <li><a href="{{ url_for('courses') }}">Courses</a></li>
+          <li><a href="{{ url_for('projects') }}">Projects</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h6 class="lm-footer-heading">Tools</h6>
+        <ul class="list-unstyled lm-footer-links">
+          <li><a href="{{ url_for('skill_gap') }}">Skill Gap</a></li>
+          <li><a href="{{ url_for('weekly_plan') }}">Study Plan</a></li>
+          <li><a href="{{ url_for('career') }}">Career</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h6 class="lm-footer-heading">Powered by</h6>
+        <p class="text-muted small mb-0">
+          <i class="bi bi-cpu me-1"></i> IBM Granite 3.3 8B Instruct<br/>
+          <i class="bi bi-cloud me-1"></i> IBM watsonx.ai Platform<br/>
+          <i class="bi bi-lightning-charge me-1"></i> Python Flask
+        </p>
+      </div>
+    </div>
+    <hr class="lm-footer-divider" />
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <p class="text-muted small mb-0">© 2024 LearnMate. Built with IBM watsonx.ai</p>
+      <p class="text-muted small mb-0">
+        <i class="bi bi-heart-fill text-danger me-1"></i>Empowering learners worldwide
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

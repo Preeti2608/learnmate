@@ -1,0 +1,31 @@
+<!-- Shared AI result area – included by all generation pages -->
+<!-- Loading state -->
+<div id="loadingState" class="text-center py-5 d-none">
+  <div class="lm-ai-loader mx-auto mb-4"></div>
+  <h5 class="text-muted">IBM Granite is thinking...</h5>
+  <p class="text-muted small">Analyzing your profile and generating personalized content.</p>
+  <div class="lm-loading-steps mt-4" id="loadingSteps">
+    <span class="lm-loading-step active" id="step1">Analyzing profile...</span>
+    <span class="lm-loading-step" id="step2">Applying AI model...</span>
+    <span class="lm-loading-step" id="step3">Personalizing content...</span>
+    <span class="lm-loading-step" id="step4">Finalizing results...</span>
+  </div>
+</div>
+
+<!-- Result container -->
+<div id="resultContainer" class="lm-result-card d-none">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <span class="lm-result-label">
+      <i class="bi bi-robot me-2 text-primary"></i>AI Generated · IBM Granite 3.3
+    </span>
+    <div class="d-flex gap-2">
+      <button class="btn btn-sm lm-btn-outline-secondary" onclick="copyResult()">
+        <i class="bi bi-clipboard me-1"></i>Copy
+      </button>
+      <button class="btn btn-sm lm-btn-outline-primary" onclick="generateContent()">
+        <i class="bi bi-arrow-clockwise me-1"></i>Regenerate
+      </button>
+    </div>
+  </div>
+  <div id="aiContent" class="lm-ai-content"></div>
+</div>

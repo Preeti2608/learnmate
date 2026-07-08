@@ -1,0 +1,78 @@
+{#  ─── Generic AI-generation page macro ─────────────────────────────────────
+    Used by: roadmap, skill_gap, courses, weekly_plan, projects, career
+    Params: section (str), icon (str), title (str), subtitle (str), btn_label (str)
+#}
+{% macro ai_page(section, icon, color, title, subtitle, btn_label) %}
+{% extends "base.html" %}
+{% block title %}{{ title }} – LearnMate{% endblock %}
+{% block content %}
+<div class="container-xl py-5">
+
+  <!-- Header -->
+  <div class="lm-page-header text-center mb-5 animate-fade-up">
+    <div class="lm-page-icon-wrap mb-3">
+      <i class="bi {{ icon }} {{ color }} lm-page-icon"></i>
+    </div>
+    <h1 class="lm-page-title">{{ title }}</h1>
+    <p class="lm-page-subtitle">{{ subtitle }}</p>
+    <p class="lm-profile-pill mt-3">
+      <i class="bi bi-person-fill me-1"></i>
+      <strong>{{ profile.get('name','Student') }}</strong> ·
+      {{ profile.get('skill_level','') }} · {{ profile.get('career_goal','') }}
+    </p>
+  </div>
+
+  <!-- Generate button -->
+  <div class="text-center mb-4">
+    <button id="generateBtn" class="btn lm-btn-primary btn-lg px-5" onclick="generateContent()">
+      <i class="bi bi-stars me-2"></i>{{ btn_label }}
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div id="loadingState" class="text-center py-5 d-none">
+    <div class="lm-ai-loader mx-auto mb-4"></div>
+    <h5 class="text-muted">IBM Granite is thinking...</h5>
+    <p class="text-muted small">Analyzing your profile and generating personalized content.</p>
+  </div>
+
+  <!-- Result container -->
+  <div id="resultContainer" class="lm-result-card d-none">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="lm-result-label">
+        <i class="bi bi-robot me-2 text-primary"></i>AI Generated · IBM Granite
+      </span>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm lm-btn-outline-secondary" onclick="copyResult()">
+          <i class="bi bi-clipboard me-1"></i>Copy
+        </button>
+        <button class="btn btn-sm lm-btn-outline-primary" onclick="generateContent()">
+          <i class="bi bi-arrow-clockwise me-1"></i>Regenerate
+        </button>
+      </div>
+    </div>
+    <div id="aiContent" class="lm-ai-content"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="lm-nav-cards mt-5">
+    <a href="{{ url_for('chat') }}" class="lm-nav-card">
+      <i class="bi bi-chat-dots-fill text-primary"></i>
+      <span>Ask AI Coach</span>
+    </a>
+    <a href="{{ url_for('dashboard') }}" class="lm-nav-card">
+      <i class="bi bi-speedometer2 text-success"></i>
+      <span>Dashboard</span>
+    </a>
+  </div>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const SECTION = "{{ section }}";
+</script>
+<script src="{{ url_for('static', filename='js/generator.js') }}"></script>
+{% endblock %}
+{% endblock %}
+{% endmacro %}

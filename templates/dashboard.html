@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Progress Dashboard – LearnMate{% endblock %}
+
+{% block content %}
+<div class="container-xl py-5">
+
+  <!-- Header -->
+  <div class="lm-page-header mb-5 animate-fade-up">
+    <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+      <div class="lm-avatar-circle lm-avatar-lg">
+        {{ profile.get('name','?')[0].upper() }}
+      </div>
+      <div>
+        <h1 class="lm-page-title mb-1">
+          Welcome back, {{ profile.get('name','Student') }}! 👋
+        </h1>
+        <p class="text-muted mb-0">
+          {{ profile.get('career_goal','') }} · {{ profile.get('skill_level','') }} Level ·
+          {{ profile.get('technologies','') }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Stats row ── -->
+  <div class="row g-4 mb-5">
+    <div class="col-6 col-lg-3">
+      <div class="lm-stat-card lm-stat-blue">
+        <i class="bi bi-bullseye"></i>
+        <div>
+          <div class="lm-stat-card-num">{{ profile.get('career_goal','—') }}</div>
+          <div class="lm-stat-card-label">Career Goal</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="lm-stat-card lm-stat-green">
+        <i class="bi bi-lightning-charge-fill"></i>
+        <div>
+          <div class="lm-stat-card-num">{{ profile.get('skill_level','—') }}</div>
+          <div class="lm-stat-card-label">Skill Level</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="lm-stat-card lm-stat-orange">
+        <i class="bi bi-clock-fill"></i>
+        <div>
+          <div class="lm-stat-card-num">{{ profile.get('study_hours','—') }} hrs</div>
+          <div class="lm-stat-card-label">Daily Study</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="lm-stat-card lm-stat-purple">
+        <i class="bi bi-code-slash"></i>
+        <div>
+          <div class="lm-stat-card-num">{{ profile.get('technologies','').split(',') | length }}</div>
+          <div class="lm-stat-card-label">Technologies</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Module grid ── -->
+  <h5 class="lm-section-heading mb-4">
+    <i class="bi bi-grid-3x2-gap-fill me-2 text-primary"></i>Your Learning Modules
+  </h5>
+  <div class="row g-4">
+    {% set modules = [
+      (url_for('roadmap'),     "bi-signpost-2-fill",   "lm-module-green",  "Learning Roadmap",       "Your step-by-step path from beginner to job-ready."),
+      (url_for('skill_gap'),   "bi-bar-chart-gaps",    "lm-module-yellow", "Skill Gap Analysis",      "Discover missing skills and prioritize what to learn."),
+      (url_for('courses'),     "bi-book-fill",         "lm-module-blue",   "Course Recommendations",  "Curated topics in the perfect learning order."),
+      (url_for('weekly_plan'), "bi-calendar3",         "lm-module-red",    "Weekly Study Plan",       "Structured daily schedule based on your hours."),
+      (url_for('projects'),    "bi-code-slash",        "lm-module-gray",   "Project Ideas",           "Hands-on projects to build your portfolio."),
+      (url_for('career'),      "bi-briefcase-fill",    "lm-module-indigo", "Career Guidance",         "Roles, certifications, and a 12-month action plan."),
+      (url_for('chat'),        "bi-chat-dots-fill",    "lm-module-teal",   "AI Chat Coach",           "Chat with your IBM Granite-powered learning coach."),
+    ] %}
+    {% for link, icon, cls, title, desc in modules %}
+    <div class="col-md-6 col-xl-4">
+      <a href="{{ link }}" class="lm-module-card {{ cls }} h-100 text-decoration-none">
+        <div class="lm-module-icon"><i class="bi {{ icon }}"></i></div>
+        <div>
+          <h6 class="lm-module-title mb-1">{{ title }}</h6>
+          <p class="lm-module-desc mb-0">{{ desc }}</p>
+        </div>
+        <i class="bi bi-arrow-right-circle lm-module-arrow"></i>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── Profile summary card ── -->
+  <div class="row mt-5">
+    <div class="col-lg-6">
+      <div class="lm-card p-4 h-100">
+        <h6 class="lm-card-heading mb-3">
+          <i class="bi bi-person-fill me-2 text-primary"></i>Your Profile
+        </h6>
+        <table class="table lm-profile-table mb-0">
+          <tbody>
+            {% set rows = [
+              ("Education",        profile.get('education', '—')),
+              ("College",          profile.get('college', '—')),
+              ("Branch",           profile.get('branch', '—')),
+              ("Career Goal",      profile.get('career_goal', '—')),
+              ("Technologies",     profile.get('technologies', '—')),
+              ("Study Hours",      profile.get('study_hours', '—') ~ ' hrs/day'),
+              ("Learning Style",   profile.get('learning_style', '—')),
+            ] %}
+            {% for label, value in rows %}
+            <tr>
+              <td class="text-muted small fw-medium">{{ label }}</td>
+              <td class="small">{{ value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="mt-3">
+          <a href="{{ url_for('profile') }}" class="btn btn-sm lm-btn-outline-secondary">
+            <i class="bi bi-pencil-square me-1"></i>Edit Profile
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="lm-card p-4 h-100">
+        <h6 class="lm-card-heading mb-3">
+          <i class="bi bi-stars me-2 text-warning"></i>Quick Start
+        </h6>
+        <p class="text-muted small mb-3">
+          Get the most out of LearnMate by generating these key resources:
+        </p>
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('roadmap') }}" class="btn lm-btn-primary">
+            <i class="bi bi-signpost-2-fill me-2"></i>Generate Learning Roadmap
+          </a>
+          <a href="{{ url_for('skill_gap') }}" class="btn lm-btn-outline-primary">
+            <i class="bi bi-bar-chart-gaps me-2"></i>Run Skill Gap Analysis
+          </a>
+          <a href="{{ url_for('weekly_plan') }}" class="btn lm-btn-outline-secondary">
+            <i class="bi bi-calendar3 me-2"></i>Build Weekly Study Plan
+          </a>
+          <a href="{{ url_for('chat') }}" class="btn lm-btn-outline-secondary">
+            <i class="bi bi-chat-dots-fill me-2"></i>Chat with AI Coach
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

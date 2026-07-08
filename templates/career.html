@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Career Guidance – LearnMate{% endblock %}
+
+{% block content %}
+<div class="container-xl py-5">
+  <div class="lm-page-header text-center mb-5 animate-fade-up">
+    <div class="lm-page-icon-wrap mb-3">
+      <i class="bi bi-briefcase-fill text-primary lm-page-icon"></i>
+    </div>
+    <h1 class="lm-page-title">Career Guidance</h1>
+    <p class="lm-page-subtitle">Career paths, interview prep, certifications, and a 12-month action plan toward your goal.</p>
+    <span class="lm-profile-pill">
+      <i class="bi bi-person-fill me-1"></i>
+      <strong>{{ profile.get('name','Student') }}</strong> ·
+      {{ profile.get('skill_level','') }} · {{ profile.get('career_goal','') }}
+    </span>
+  </div>
+  <div class="text-center mb-4">
+    <button id="generateBtn" class="btn lm-btn-primary btn-lg px-5" onclick="generateContent()">
+      <i class="bi bi-stars me-2"></i>Get Career Guidance
+    </button>
+  </div>
+  {% include '_ai_result_area.html' %}
+  {% include '_nav_shortcuts.html' %}
+</div>
+{% endblock %}
+{% block scripts %}<script>const SECTION="career";</script>
+<script src="{{ url_for('static', filename='js/generator.js') }}"></script>{% endblock %}
