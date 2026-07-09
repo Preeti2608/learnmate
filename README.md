@@ -5,6 +5,29 @@
 
 ---
 
+# 🌐 Live Demo
+
+🚀 **Live Application:**  
+https://learnmate-aa9w.onrender.com
+
+📂 **GitHub Repository:**  
+https://github.com/Preeti2608/learnmate
+
+The application is deployed on **Render** and uses **IBM watsonx.ai** for AI-powered personalized learning recommendations.
+
+---
+
+## 🚀 Project Highlights
+
+- 🤖 AI-Powered Personalized Learning Assistant
+- ☁️ IBM Cloud Lite + IBM watsonx.ai Integration
+- 🧠 Meta Llama 3.3 70B Instruct (via IBM watsonx.ai)
+- 🌐 Live Deployment on Render
+- 💻 Python Flask Backend
+- 🎨 Responsive Bootstrap UI
+- 📚 Personalized Roadmaps, Skill Gap Analysis, Weekly Study Plans, Project Suggestions & Career Guidance
+
+  
 ## ✨ Features
 
 | Module | Description |
