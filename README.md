@@ -1,6 +1,6 @@
 # LearnMate – AI-Powered Personalized Course Pathway Agent
 
-> **Your intelligent AI learning coach** — powered by IBM watsonx.ai and IBM Granite models.
+> **Your intelligent AI learning coach** — powered by IBM watsonx.ai and Meta Llama 3.3 70B Instruct.
 > LearnMate understands your goals, evaluates your skills, and generates personalized learning roadmaps.
 
 ---
@@ -11,7 +11,7 @@
 |---|---|
 | 🏠 Home Page | Attractive landing with hero section and features overview |
 | 👤 Student Profile | Capture education, skills, career goal, and learning preferences |
-| 🤖 AI Chat Coach | Real-time conversational coach powered by IBM Granite 3.3 |
+| 🤖 AI Chat Coach | Real-time conversational coach powered by Meta Llama 3.3 70B Instruct via IBM watsonx.ai |
 | 🗺️ Learning Roadmap | Beginner → Intermediate → Advanced phases with milestones |
 | 📊 Skill Gap Analysis | Identify missing skills and priority learning areas |
 | 📚 Course Recommendations | Curated learning topics in optimal order |
@@ -109,7 +109,7 @@ Edit `.env` and fill in your real credentials:
 ```env
 IBM_API_KEY=your_ibm_cloud_api_key_here
 WATSONX_PROJECT_ID=your_watsonx_project_id_here
-WATSONX_URL=https://us-south.ml.cloud.ibm.com
+WATSONX_URL=https://au-syd.ml.cloud.ibm.com
 FLASK_SECRET_KEY=your_random_secret_key
 FLASK_ENV=development
 ```
@@ -127,7 +127,13 @@ FLASK_ENV=development
    - Copy the **Project ID** from the General section
 
 3. **Service URL**
-   - Use the URL for your IBM Cloud region:
+   Use the IBM watsonx.ai endpoint that matches your IBM Cloud region.
+
+   Example (used in this project):
+
+   Sydney (AU): https://au-syd.ml.cloud.ibm.com
+
+   Other supported regions include:
      - US South: `https://us-south.ml.cloud.ibm.com`
      - EU Frankfurt: `https://eu-de.ml.cloud.ibm.com`
      - UK South: `https://eu-gb.ml.cloud.ibm.com`
@@ -214,17 +220,21 @@ DIFFICULTY_CALIBRATION = "..."    # How content adapts to skill level
 
 ---
 
-## 🤖 IBM Granite Model
+## 🤖 AI Foundation Model
 
-LearnMate uses **IBM Granite 3.3 8B Instruct** (`ibm/granite-3-1-8b-base`):
+LearnMate uses ## 🤖 AI Foundation Model
 
-- Optimized for instruction-following and conversational tasks
-- Low latency, high quality responses
-- Change the model in `agent.py`:
+LearnMate uses **Meta Llama 3.3 70B Instruct** through **IBM watsonx.ai** for intelligent conversational AI, personalized learning recommendations, roadmap generation, and career guidance.
+
+The model is accessed securely through IBM Cloud using the IBM watsonx.ai SDK.
+
+To change the model, update the `MODEL_ID` in `agent.py`:
 
 ```python
-MODEL_ID = "ibm/granite-3-1-8b-base"  # Change to any supported model
+MODEL_ID = "meta-llama/llama-3-3-70b-instruct"
 ```
+
+You may replace it with any other foundation model supported by your IBM watsonx.ai deployment.
 
 ---
 
@@ -234,7 +244,7 @@ MODEL_ID = "ibm/granite-3-1-8b-base"  # Change to any supported model
 |---|---|---|
 | `flask` | 3.0.3 | Web framework |
 | `python-dotenv` | 1.0.1 | Environment variable management |
-| `ibm-watsonx-ai` | 1.1.2 | IBM watsonx.ai SDK |
+| `ibm-watsonx-ai` | 1.3.0 | IBM watsonx.ai SDK |
 | `requests` | 2.32.3 | HTTP client |
 | `gunicorn` | 22.0.0 | Production WSGI server |
 
@@ -258,4 +268,4 @@ MIT License – free to use, modify, and distribute.
 
 ---
 
-*Built with ❤️ using Python Flask + IBM watsonx.ai (IBM Granite 3.3)*
+*Built with ❤️ using Python Flask + IBM watsonx.ai + Meta Llama 3.3 70B Instruct*
